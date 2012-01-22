@@ -41,6 +41,9 @@ TIME_ZONE = 'America/Chicago'
 LANGUAGE_CODE = 'en-us'
 
 #SITE_ID = 2
+SITE_NAME = 'We Share A'
+DOMAIN_ROOT_URL = 'https://www.wesharea.com'
+ROOT_URLCONF = 'urls'
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
@@ -49,9 +52,6 @@ USE_I18N = True
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale
 USE_L10N = True
-
-DOMAIN_ROOT_URL = 'https://www.wesharea.com'
-ROOT_URLCONF = 'wesharea.urls'
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/media/"
@@ -116,24 +116,30 @@ INSTALLED_APPS = (
     #'django.contrib.staticfiles',
     'django.contrib.admin',
     # 'django.contrib.admindocs',
+    'emailregistration', #no models
+    'browserutils', #no models
+    'open_facebook', #no models
+    #'south', #below here models built with south
     'registration',
     'django_facebook',
-    'exptracker',
     'groupmanager',
-    'browserutils',
+    'wesharea',
+    'exptracker',
 )
 
 
 FACEBOOK_APP_ID = '123990940996615'
 FACEBOOK_APP_SECRET = 'd5f1da3a9e65250f3a0005f03fdb91ee'
 FACEBOOK_API_KEY = '123990940996615'
-#FACEBOOK_API_KEY = '85e410c9679f890dcb879368e3a5ab2f'
+FACEBOOK_APP_NAME = 'weshareadev'
+FACEBOOK_DEFAULT_SCOPE = ('email',)
+FACEBOOK_STORE_LIKES = True
 
 #Groupmanager settings
 AUTO_ACCEPT = True
 
 #Registration settings
-REGISTRATION_BACKEND = 'groupmanager.backends.registration.DefaultBackend'
+REGISTRATION_BACKEND = 'emailregistration.backends.registration.DefaultEmailRegBackend'
 ACCOUNT_ACTIVATION_DAYS = 30
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -147,8 +153,8 @@ LOGIN_REDIRECT_URL = '/welcome/'
 LOGOUT_REDIRECT_URL = '/'
 
 #Auth settings
-AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend', 'django_facebook.auth_backends.FacebookBackend',)
-AUTH_PROFILE_MODULE = 'groupmanager.UserProfile'
+AUTHENTICATION_BACKENDS = ('emailregistration.backends.auth.EmailAuthenticationBackend','django.contrib.auth.backends.ModelBackend', 'django_facebook.auth_backends.FacebookBackend',)
+AUTH_PROFILE_MODULE = 'wesharea.UserProfile'
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
@@ -167,20 +173,20 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 # the site admins on every HTTP 500 error.
 # See http://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'mail_admins': {
-            'level': 'ERROR',
-            'class': 'django.utils.log.AdminEmailHandler'
-        }
-    },
-    'loggers': {
-        'django.request':{
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
-            'propagate': True,
-        },
-    }
-}
+#LOGGING = {
+#    'version': 1,
+#    'disable_existing_loggers': False,
+#    'handlers': {
+#        'mail_admins': {
+#            'level': 'ERROR',
+#            'class': 'django.utils.log.AdminEmailHandler'
+#        }
+#    },
+#    'loggers': {
+#        'django.request':{
+#            'handlers': ['mail_admins'],
+#            'level': 'ERROR',
+#            'propagate': True,
+#        },
+#    }
+#}

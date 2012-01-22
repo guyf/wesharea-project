@@ -3,20 +3,22 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>../templates/registration/activation_email.txt</string>
+	<string>../settings.live.py</string>
 	<key>documents</key>
 	<array>
 		<dict>
 			<key>filename</key>
 			<string>../settings.live.py</string>
 			<key>lastUsed</key>
-			<date>2012-01-16T14:02:02Z</date>
+			<date>2012-01-22T19:18:06Z</date>
+			<key>selected</key>
+			<true/>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>../settings.py</string>
 			<key>lastUsed</key>
-			<date>2012-01-16T13:59:14Z</date>
+			<date>2012-01-22T19:18:06Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -78,9 +80,7 @@
 			<key>filename</key>
 			<string>../templates/registration/activation_email.txt</string>
 			<key>lastUsed</key>
-			<date>2012-01-22T17:33:44Z</date>
-			<key>selected</key>
-			<true/>
+			<date>2012-01-22T19:16:45Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -190,43 +190,43 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>18</integer>
+				<integer>1</integer>
 				<key>line</key>
-				<integer>132</integer>
+				<integer>191</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>104</integer>
+			<integer>0</integer>
 		</dict>
 		<key>../settings.py</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>0</integer>
+				<integer>29</integer>
 				<key>line</key>
-				<integer>136</integer>
+				<integer>151</integer>
 			</dict>
 			<key>columnSelection</key>
 			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>107</integer>
+			<integer>0</integer>
 			<key>selectFrom</key>
 			<dict>
 				<key>column</key>
-				<integer>18</integer>
+				<integer>23</integer>
 				<key>line</key>
-				<integer>137</integer>
+				<integer>151</integer>
 			</dict>
 			<key>selectTo</key>
 			<dict>
 				<key>column</key>
-				<integer>0</integer>
+				<integer>31</integer>
 				<key>line</key>
-				<integer>136</integer>
+				<integer>151</integer>
 			</dict>
 		</dict>
 		<key>../static/js/facebook.js</key>
@@ -540,6 +540,6 @@
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>
-	<string>{{153, 157}, {1339, 938}}</string>
+	<string>{{56, 220}, {1339, 938}}</string>
 </dict>
 </plist>
