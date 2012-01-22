@@ -1,0 +1,17 @@
+<div class="menu">
+	<ul>
+		<li><a id="current" href="" target="_self" >Shared Expenses<img src="/static/images/icons/tiny_triangle.png"></a>
+		    <ul>
+		    {% for se in sharedexpenses %}
+		      <li><a href="{% url view_sharedexpense se.id %}">{{se.name}}</a></li>
+		    {% endfor %}
+		      <li><a href="{% url create_sharedexpense %}">Create New</a></li>
+		      <li><a href="" target="_self"></a></li>
+		    </ul>
+		</li>
+	</ul>
+</div><!--/menu -->
+<div style="clear:both;"></div>
+  
+ 
+

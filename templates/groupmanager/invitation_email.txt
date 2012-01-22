@@ -1,0 +1,13 @@
+{% load i18n %}
+{% trans "View invitation at We Share A" %}:
+
+{% blocktrans %}
+Hi,
+
+You have been invited to join group tracking a shared expense at We Share A.
+
+The link below will allow you to create a We Share A account for you and accept the invitation. You will just need to select a password.
+
+{% endblocktrans %}
+http://{{ site.domain }}{% url accept_email_invite activation_key %}
+Nb: this link is valid for {{ expiration_days }} days, if it has expired and you still want to join please ask {{inviter.first_name}} to send you a new invitation.

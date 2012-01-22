@@ -1,0 +1,63 @@
+{% load exptracker_tags %}
+{% load groupmanager_tags %}
+
+<script>
+$(document).ready(function() {
+  $('#showPaymentForm{{participant.id}}').click(function() {
+    $('#makepayment{{participant.id}}').toggle(400);
+    return false;
+  });
+
+  $('#removeParticipant{{participant.id}}').click(function() {
+	var msg = 'Are you sure you wish to remove {{participant.first_name}}?\n\n' +
+	          'A particpants balance must be zero before you can remove them. All their expenses will be removed automatically, once they are deleted.\n\n'
+	var r = confirm(msg)
+	if (r == true){
+	  return true;
+	}
+	else{
+      return false;
+    }
+  });
+
+});
+</script>
+
+  <div class="participant">
+    <div class="participanttable">
+	  <table>
+        <tr><td ROWSPAN=3>{% facebook_photo participant %}</td>
+	      <td COLSPAN=2>{{participant.first_name}}</td></tr>
+	    <tr>
+	      <td class="small">&nbsp;&nbsp;has spent:</td><td>{% show_sharedexpense_total sharedexpense participant.username %}</td>
+	    </tr>
+	    <tr>
+	      <td class="small">owes/owed:</td><td>{% show_user_balance sharedexpense participant.username %}</td>
+	    </tr>
+	  </table>
+    </div><!--participanttable-->
+
+   {% if not is_me %}
+    <div class="participantmenu span-7">
+	  {% if is_org %}
+	  <a href="{% url wsa_remove_participant sharedexpense.id participant.id %}" id="removeParticipant{{participant.id}}">Remove {{participant.first_name}}</a><br />
+	  {% endif %}
+      <a href="#" id="showPaymentForm{{participant.id}}">Payment from you to {{participant.first_name}}</a><br />
+    </div><!--participantmenu-->
+   {% endif %}
+
+    <div id="makepayment{{participant.id}}" class="span-7" style="display:none;">
+	  <form method="post" action=" {% url make_payment sharedexpense.id participant.id %}" onsubmit="javascript:removecurrency(this);">
+		  {% csrf_token %}
+	      <table><tr><td>{{expensepayment_form.name}}</td><td>{{expensepayment_form.amount}}</td>
+		             <td><input type="image" src="/static/images/icons/next.png" name="make payment" /></td></tr>
+		  </table>{{expensepayment_form.paid_date.as_hidden}}
+	  </form>
+    </div><!--makepayment-->
+    <!-- CONFIRM PAYMENTS SNIPPET GOES IN HERE TO REINSTATE -->
+    <div style="clear:both;"></div>
+  </div><!--participant-->
+
+
+
+

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<script type="text/javascript">
+function copyuname(){
+	$('input[name=username]').val($('input[name=email]').val());
+	return true;
+}
+</script>
+
+<div class="container">
+  <div class="span-24">
+	{% if messages %}{% comment %}TODO: move this out into custom tag{% endcomment %}
+    <div class="messages">
+	  {% for message in messages %}
+	    <div {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
+	  {% endfor %}
+    </div><!--/messages -->
+    {% endif %}
+    <div class="span-18 prepend-3">
+      <div class="addparticipants">
+        <h3>Register as a new user</h3>
+	    <p class="small">All fields are required.</p>
+	    <form method="post" action="." onsubmit="javascript:copyuname();">
+	      {% csrf_token %}
+          {{form.username}}
+	      <table>
+            <tr><td>{{form.email}}</td><td>&nbsp;&nbsp;</td><td NOWRAP><span class="tabletext">(used to guarantee a unique username)</span></td><td NOWRAP>{{form.email.errors}}</td></tr>
+	   	    <tr><td>{{form.first_name}}</td><td>&nbsp;&nbsp;</td><td NOWRAP><span class="tabletext">enter your first name</span></td><td NOWRAP>{{form.first_name.errors}}</td></tr>
+		    <tr><td>{{form.last_name}}</td><td>&nbsp;&nbsp;</td><td NOWRAP><span class="tabletext">and your last name</span></td><td NOWRAP>{{form.last_name.errors}}</td></tr>
+	   	    <tr><td>{{form.password1}}</td><td>&nbsp;&nbsp;</td><td NOWRAP><span class="tabletext">choose a password</span></td><td NOWRAP>{{form.password1.errors}}</td></tr>
+		    <tr><td>{{form.password2}}</td><td>&nbsp;&nbsp;</td><td NOWRAP><span class="tabletext">re-type your password</span></td><td NOWRAP>{{form.password2.errors}}</td></tr>
+	      </table>
+	      <div>
+		    <br />
+	        <p class="small">Once registered you will receive an email asking you to click on a link to activate your account.</p>
+	      </div>
+	      <div class="buttonpanel">
+		    <a href="{% url home %}"><input type="button" name="cancel" value="Cancel" /></a>
+	        <input type="submit" value="Register" alt="register" name="register" />
+	      </div><!--buttonpanel-->
+	    </form>
+      <div style="clear:both;"></div>
+      </div><!--/addparticipants -->
+	</div><!--/span-18 -->
+  </div><!--/span-24 -->
+</div><!--/container-->
+{% endblock content %}

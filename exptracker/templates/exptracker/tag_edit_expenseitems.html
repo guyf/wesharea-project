@@ -1,0 +1,22 @@
+{% load exptracker_tags %}
+
+{% for ei_formset in expenseitem_formsets %}
+<div class="editexpenseitems">
+  <form method="post" id="ei_formset_{{ei_formset.prefix}}" action="{% url update_expenseitems sharedexpense.id ei_formset.prefix %}" onsubmit="javascript:removecurrency(this);">
+	{% csrf_token %}
+	{{ ei_formset.management_form }}
+	<table>
+	  <thead>
+	    <tr><th></th><th></th><th></th><th></th><th><img style="height:15px;width:15px;" src="/static/images/icons/trash.png" title="check the rows to delete and click update"></th></tr>
+  </thead>
+      {% for form in ei_formset.forms %}
+        <tr>{{form.id}}<td>{{form.name}}</td><td>{{form.desc}}</td><td>{{form.paid_date}}</td><td>{{form.amount}}</td><td>{{form.DELETE}}</td></tr>
+	  {% endfor %}
+    </table>
+    <div class="buttonpanel">
+      <input type="submit" value="update" />
+    </div><!--buttonpanel-->
+  </form>
+<div style="clear:both;"></div>
+</div><!--editexpenseitems-->
+{% endfor %}

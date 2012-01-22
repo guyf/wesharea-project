@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load exptracker_tags %}
+{% load groupmanager_tags %}
+
+{% block fbogmetadata %}
+<meta property="og:title" content="{{sharedexpense.name}}"/>
+<meta property="og:type" content="sharedexpense"/>
+<meta property="og:url" content="http://www.wesharea.com/sharedexpense/{{sharedexpense.id}}/"/>
+<meta property="og:site_name" content="We Share A"/>
+<meta property="fb:app_id" content="196584077020306"/>
+<meta property="og:description" content="{%show_firstname_from_userid sharedexpense.organiser.id%} would like to"/>
+{% endblock fbogmetadata %}
+
+{% block social %}
+<div class="socialbar">
+  <div class="container">
+	  <div class="span-24">
+		<div class="socialbuttons">
+           <fb:send href="http://www.wesharea.com/" font="lucida grande"></fb:send><span class="socialprompt">update group members with a facebook message</span>
+           &nbsp;&nbsp;&nbsp;&nbsp;<span class="socialprompt"><a href="http://www.facebook.com/pages/We-Share-A/180008642067021?sk=wall" target="_blank">feedback</a>&nbsp;&nbsp;we are always looking to improve please tell us how</span>
+         </div><!--/socialbuttons -->
+	  </div><!--/span-24 -->
+  </div><!--/container -->
+</div><!--/socialbar -->
+{% endblock social %}
+
+{% block content %}
+<div class="sharedexpense">
+  <div class="container">
+     <div class="span-16">
+	    <p><span class="setitle">{{sharedexpense.name}}</span>&nbsp;<span class="setitledesc">{{sharedexpense.desc}}</span>&nbsp;</p>
+	    {% if is_org %}<p><span><a class="editlink" href="{% url update_sharedexpense sharedexpense.id %}">edit details</a></span></p>
+	    {% else %}<p><span>organised by:</span>&nbsp;<span class="setitleorg">{% show_fullname_from_userid sharedexpense.group.organiser.id %}</span></p>{% endif %}
+	   <div class="totals">
+		<p>Total spend to date:&nbsp;{% show_sharedexpense_total sharedexpense %}</p>
+		<p>Spend per person:&nbsp;{% show_per_participant_spend sharedexpense %}</p>
+	   </div><!--totals-->
+     </div><!--span-16-->
+    <div class="span-8 last">
+	  <div class="sharedexpensemenu">
+		  {% if is_org %}
+		    {% facebook_invite_js group request.user.first_name %}
+	        <p><a id="show_fb_invite" onclick="inviteFBFriends();" href="#">Add friends from Facebook</a></p>
+		    <p><a href="{% url invite_existing group.id %}">Add friends from We Share A</a></p>
+            <p><a href="{% url invite_email group.id %}">Invite friends to join We Share A</a></p>
+		  {% endif %}
+      </div><!--/sharedexpensemenu -->
+	</div><!--/span-8 -->
+      <!--<div class="span-12 last" style="margin-top:30px;">
+         {%comment%}{% balances_widget sharedexpense participants %}{%endcomment%}
+      </div>--><!--/span-12 -->
+  </div><!--/container -->
+</div><!--/sharedexpense -->
+
+<div class="container">
+  <div class="span-24">
+	
+    {% if messages %}{% comment %}TODO: move this out into custom tag{% endcomment %}
+    <div class="messages">
+	  {% for message in messages %}
+	    <div {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
+	  {% endfor %}
+    </div><!--/messages -->
+    {% endif %}
+
+    <div class="participants">
+      	{% for p in participants %}
+		<div class="participantsummary">
+		  <div class="span-7 append-1">
+            {% show_participant p sharedexpense request.user%}
+		  </div><!--span-6-->
+		  <div class="span-16 last">
+			{% if is_org %}
+		      {% edit_expenseitems sharedexpense p.username %}
+            {% else %}
+              {% if p.username == request.user.username %}
+                {% edit_expenseitems sharedexpense p.username %}
+              {% else %}
+                {% view_expenseitems sharedexpense p.username %}
+              {% endif %}
+            {% endif %}
+		  </div><!--span-16-->
+		  <div style="clear:both;"></div>
+		</div><!--participantsummary-->
+		{% endfor %}
+    </div><!--/participants -->
+  </div><!--/span-24 -->
+</div><!--/container-->
+{% endblock content %}

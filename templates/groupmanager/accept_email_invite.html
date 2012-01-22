@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load groupmanager_tags %}
+
+{% block content %}
+<div class="container">
+	{% if messages %}{% comment %}TODO: move this out into custom tag{% endcomment %}
+	  <div class="span-24">
+		  {% for message in messages %}
+		    <div {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
+		  {% endfor %}
+	  </div><!--/span-24 -->
+	{% endif %}
+  <div class="span-23 prepend-1">
+      <h2>Welcome {{invite.invitee.first_name}} you have an invitation</h2>
+		<br />
+		<p>{% user_invitation_summary invite %}</p>
+		<br />
+		<hr />
+	<p>To accept the invitation and join the groups please create yourself a password</p>
+      <form method="post" action="." onsubmit="javascript:copyuname();">
+      {% csrf_token %}
+      <table class="no-zebra">
+		  <tr><td>{{pw_form.password1}}</td><td>{{pw_form.password1.errors}}</td></tr>
+          <tr><td>{{pw_form.password2}}</td><td>{{pw_form.password2.errors}}</td></tr>
+        </table>
+        <div class="buttonpanel">
+          <input type="submit" value="{% trans 'Submit' %}" />
+	    </div><!--buttonpanel-->
+      </form>
+  </div><!--/span-18 -->
+</div><!--/container-->
+{% endblock content %}

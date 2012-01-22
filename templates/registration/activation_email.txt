@@ -1,0 +1,14 @@
+{% load i18n %}
+{% trans "Activate account at" %} {{ site.name }}:
+
+{% blocktrans %}
+Hi,
+
+Thank you for registering with We Share A, you will shortly be tracking expenses you share with friends.
+
+The link below will activate your We Share A account and is valid for {{ expiration_days }} days.
+
+Your username is your email address and your password hopefully you remember from when you registered. 
+
+{% endblocktrans %}
+http://{{ site.domain }}{% url registration_activate activation_key %}

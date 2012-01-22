@@ -1,0 +1,47 @@
+{% comment %}
+<script type="text/javascript">  
+function updateParticipant(checkboxid) {
+}  
+</script>
+{% endcomment %}
+
+{% load exptracker_tags %}
+
+<div class="edit_participants">{% for p in profiles %}
+  <form method="post" action=" {% url web-removeparticipant sharedexpense.id p.uid %}">
+	<table>
+      <tr><td ROWSPAN=2><a href="{{ p.profile_url }}"><img src="{{ p.pic_square_with_logo }}" alt="{{ p.name }}" title="{{ p.name }}" border="0" /></a></td>
+	      <td>Spent: {% show_sharedexpense_total sharedexpense p.uid %}</td>
+	  </tr>
+	  <tr><td>Balance: {% show_user_balance sharedexpense p.uid %}</td>
+		  <td><input type="submit" value="remove participant" /></td>
+	  </tr>
+	</table>
+  </form>
+  <div class='make_payment'>
+	  <form method="post" action=" {% url web-makepayment sharedexpense.id p.uid %}">
+		<table>
+	      <tr>{% for field in makepayment_form %}<td>{{ field }}</td><td>{% endfor %}</td>
+	          <td><input type="submit" value="make payment to {{p.name}}" /></td>
+	      </tr>
+	    </table>
+	  </form>
+  </div>
+  {% if confirmpayments %}
+	{% for cp in confirmpayments %} {%comment%} TODO: messy loop here will be slow {%endcomment%}
+	  {% if cp.payer.username == p.uid %}
+	  <div class='make_payment'>
+	    <form method="post" action=" {% url web-confirmpayment sharedexpense.id cp.id %}">
+	      <table>
+	        <tr><td>{{ cp.amount }}</td><td>{{ cp.desc }}</td><td><input type="submit" value="Confirm payment from {{p.name}}"></td></tr>
+		  </table>
+	    </form>
+	  </div>
+	  {% endif %}
+	{% endfor %}
+  {% endif %}
+{% endfor %}
+</div>
+  
+ 
+

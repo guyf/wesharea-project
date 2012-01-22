@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<script type="text/javascript">
+function copyuname(){
+	$('input[name=username]').val($('input[name=email]').val());
+	$('input[name=password1]').val($('input[name=email]').val());
+	$('input[name=password2]').val($('input[name=email]').val());
+	return true;
+}
+</script>
+<div class="container">
+	{% if messages %}{% comment %}TODO: move this out into custom tag{% endcomment %}
+	  <div class="span-24">
+		  {% for message in messages %}
+		    <div {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
+		  {% endfor %}
+	  </div><!--/span-24 -->
+	{% endif %}
+  <div class="span-18 prepend-3">
+    <div class="regform">
+      <h2>New User Details</h2>
+      <form method="post" action="." onsubmit="javascript:copyuname();">
+      {% csrf_token %}
+      <table>
+	      <tr><td>{{form.username}}</td></tr>
+		  <tr><td>{{form.email}}</td><td>&nbsp;&nbsp;</td><td NOWRAP><span class="tabletext">so we can send an activation email</span></td></tr>
+		  <tr><td>{{form.password1}}</td></tr>
+          <tr><td>{{form.password2}}</td></tr>
+        </table>
+        <div class="buttonpanel">
+          <input type="submit" value="{% trans 'Submit' %}" />
+	    </div><!--buttonpanel-->
+      </form>
+    </div><!--regform-->
+  </div><!--/span-18 -->
+</div><!--/container-->
+{% endblock content %}

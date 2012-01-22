@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load exptracker_tags %}
+{% load i18n %}
+
+{% block social %}
+<div class="socialbar">
+  <div class="container">
+	 <div class="span-18 append-2">
+          <fb:like href="https://www.facebook.com/pages/We-Share-A/229265693779981" send="true" show_faces="true" font=""></fb:like>
+     </div>
+     <div class="span-4 last">
+	      <div class="span-4 last"><g:plusone></g:plusone></div>
+     </div>
+  </div><!--/container -->
+</div><!--/socialbar -->
+{% endblock social %}
+
+{% block content %}
+<div class="container">
+{% if messages %}{% comment %}TODO: move this out into custom tag{% endcomment %}
+  <div class="span-24">
+	  {% for message in messages %}
+	    <div {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
+	  {% endfor %}
+  </div><!--/span-24 -->
+{% endif %}
+
+  <div class="span-24">
+  <h1>The app for friends who share anything from houses to holidays </h1>
+  <br />
+  </div><!-- span-24 -->
+  <div class="span-21 prepend-1 append-2 intro">
+      <p><img src="/static/images/icons/accept_24.png"/>&nbsp;Create a new 'shareable'<span class="small">&nbsp;(home, holiday, event, boat, building, etc.)</span></p>
+      <p><img src="/static/images/icons/accept_24.png"/>&nbsp;Invite the friends from Facebook who share it with you</p>
+      <p><img src="/static/images/icons/accept_24.png"/>&nbsp;Add everything spent in making your shareable a reality</p>
+      <p><img src="/static/images/icons/accept_24.png"/>&nbsp;Record payments made between friends involved</p>
+      <p><img src="/static/images/icons/accept_24.png"/>&nbsp;We Share A keeps track of what everyone is owed or owes</p>
+  </div><!-- span-21 -->
+  <div class="span-24 connect">
+	<div class="homelogin">
+		<form action="." method="post">{% csrf_token %}
+			<p>{{auth_form.username}}&nbsp;&nbsp;&nbsp;&nbsp;{{auth_form.password}}&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="Login"  name="login" alt="login"></p>
+			<p>{{auth_form.errors}}</p>
+			<p><span class="small">{% trans "Forgotten password" %}? </span><a href="{% url auth_password_reset %}" class="small">{% trans "Reset it" %}</a>&nbsp;&nbsp;&nbsp;&nbsp;<span class="small">{% trans "Not yet a member" %}? </span><a href="{% url registration_register %}" class="small">{% trans "Register" %}</a></p>
+			<input type="hidden" name="next" value="{% url welcome %}" />
+			<input type="hidden" value="{% url home %}" name="error_next" />
+		</form>
+	</div>
+	<br />
+	<div class="homefbconnect">
+    	<form action="{% url facebook_connect %}?facebook_login=1&amp;register_next={% url welcome %}" method="post">
+			<span class="small">or instead of creating another account and to make involving your friends easier</span>&nbsp;&nbsp;
+    		<a class="connect-button" href="javascript:void(0)" onclick="F.connect(this.parentNode);"><img src="http://static.ak.fbcdn.net/images/fbconnect/login-buttons/connect_light_large_long.gif" /></a>
+			<input type="hidden" value="{% url welcome %}" name="next" />
+			<input type="hidden" value="{% url welcome %}" name="register_next" />
+			<input type="hidden" value="{% url home %}" name="error_next" />
+    	</form>
+	</div>
+  </div><!-- span-24 -->
+</div><!--/container -->
+{% endblock content %}

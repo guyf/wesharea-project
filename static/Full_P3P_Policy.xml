@@ -1,0 +1,37 @@
+<POLICY xmlns="http://www.w3.org/2000/12/p3pv1"
+    discuri="http://www.wesharea.com/static/ourprivacypolicy.html">
+ <ENTITY>
+  <DATA-GROUP>
+   <DATA ref="#business.name">We Share A</DATA>
+   <DATA ref="#business.contact-info.postal.street">3456 Main St.</DATA>
+   <DATA ref="#business.contact-info.postal.city">Tampa</DATA>
+   <DATA ref="#business.contact-info.postal.stateprov">Fl</DATA>
+   <DATA ref="#business.contact-info.postal.postalcode">77062</DATA>
+   <DATA ref="#business.contact-info.postal.country">USA</DATA>
+   <DATA ref="#business.contact-info.online.email">wesharea@wesharea.com</DATA>
+   <DATA ref="#business.contact-info.telecom.telephone.intcode">1</DATA>
+   <DATA ref="#business.contact-info.telecom.telephone.loccode">800</DATA>
+   <DATA ref="#business.contact-info.telecom.telephone.number">5550158</DATA>
+  </DATA-GROUP>
+ </ENTITY>
+ <ACCESS><nonident/></ACCESS>
+<STATEMENT>
+  <PURPOSE><admin/><develop/></PURPOSE>
+  <RECIPIENT><ours/></RECIPIENT>
+  <RETENTION><stated-purpose/></RETENTION>
+  <DATA-GROUP>
+    <DATA ref="#dynamic.clickstream.server"/>
+    <DATA ref="#dynamic.http.useragent"/>
+  </DATA-GROUP>
+</STATEMENT>
+<STATEMENT>
+  <PURPOSE><pseudo-analysis required="opt-in"/></PURPOSE>
+  <RECIPIENT><other-recipient/></RECIPIENT>
+  <RETENTION><indefinitely/></RETENTION>
+  <DATA-GROUP>
+    <DATA ref="#user.home-info.postal.postalcode">
+      <CATEGORIES><demographic/></CATEGORIES>
+    </DATA>
+  </DATA-GROUP>
+</STATEMENT>
+</POLICY>

@@ -1,0 +1,3 @@
+{% for se in sharedexpenses %}
+	<p><a href="{% url view_sharedexpense se.id %}">{{se.name}}</a></p>
+{% endfor %}

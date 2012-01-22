@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  <div class="span-24">
+    {% if messages %}{% comment %}TODO: move this out into custom tag{% endcomment %}
+    <div class="messages">
+      {% for message in messages %}
+        <div {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
+      {% endfor %}
+    </div><!--/messages -->
+    {% endif %}
+  </div><!--/span-24 -->
+
+
+  <div class="span-20 prepend-2 append-2">
+    <div class="editsharedexpense">
+    {% if sharedexpense %}
+      <h2>Update Shared Expense</h2>
+      <form method="post" action="{% url update_sharedexpense sharedexpense.id %}">
+    {% else %}
+      <h2>Create New Shared Expense</h2>
+      <form method="post" action="{% url create_sharedexpense %}">
+    {% endif %}
+    {% csrf_token %}
+      <table>
+	      <tr><td>{{sharedexpense_form.se_type}}</td><td>&nbsp;&nbsp;</td><td NOWRAP><span class="tabletext">select what you are sharing</span></td><td NOWRAP>{{sharedexpense_form.se_type.errors}}</td></tr>
+		  <tr><td>{{sharedexpense_form.name}}</td><td>&nbsp;&nbsp;</td><td NOWRAP><span class="tabletext">give it a name</span></td><td NOWRAP>{{sharedexpense_form.name.errors}}</td></tr>
+		  <tr><td>{{sharedexpense_form.desc}}</td><td>&nbsp;&nbsp;</td><td NOWRAP><span class="tabletext">and a description (if you like)</span></td><td NOWRAP>{{sharedexpense_form.desc.errors}}</td></tr>
+          <tr><td>{{sharedexpense_form.currency}}</td><td>&nbsp;&nbsp;</td><td NOWRAP><span class="tabletext">put in a currency symbol or up to 3 characters</span></td><td NOWRAP>{{sharedexpense_form.currency.errors}}</td></tr>
+		  <tr><td>{{sharedexpense_form.start_date}}</td><td>&nbsp;&nbsp;</td><td NOWRAP><span class="tabletext">and the date that it all started (if you like)</span></td><td NOWRAP>{{sharedexpense_form.start_date.errors}}</td></tr>
+        </table>
+        <div class="buttonpanel">
+	    {% if sharedexpense %}
+	      <a href="{% url view_sharedexpense sharedexpense.id %}"><input type="button" name="cancel" value="Cancel" /></a>
+          <input type="submit" value="Update" alt="update shared expense" name="update shared expense" />
+	    {% else %}
+	      <a href="{% url welcome %}"><input type="button" name="cancel" value="Cancel" /></a>
+          <input type="submit" value="Save" alt="save shared expense" name="save shared expense" />
+	    {% endif %}
+	    </div><!--buttonpanel-->
+      </form>
+    </div><!--editsharedexpense-->
+  </div><!--/span-18 -->
+</div><!--/container-->
+{% endblock content %}

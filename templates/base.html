@@ -1,0 +1,110 @@
+{% load i18n %}
+{% load exptracker_tags %}
+{% load groupmanager_tags %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://ogp.me/ns#" xmlns:fb="http://www.facebook.com/2008/fbml" xml:lang="en" lang="en">
+<head>
+   <title>We Share A </title>
+
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   {%comment%}{% block fbogmetadata %}{% endblock fbogmetadata %}{%endcomment%}
+   <meta property="og:title" content="We Share A"/>
+   <meta property="og:type" content="website"/>
+   <meta property="og:url" content="https://www.wesharea.com"/>
+   <meta property="og:site_name" content="We Share A"/>
+   <meta property="fb:app_id" content="123990940996615"/>
+   <meta property="og:description" content="The app for friends who share anything from houses to holidays"/>
+   <meta property="og:image" content="https://www.wesharea.com/static/images/logo/wsa_symbol-50.jpeg"/>
+
+   <!-- Framework CSS -->
+   <link rel="stylesheet" href="{{ STATIC_URL }}css/screen.css" type="text/css" media="screen, projection">
+   <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/static/css/fbapp/ie.css" type="text/css" media="screen, projection">
+   <![endif]-->
+    
+    <!-- Site Specific CSS -->
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/base.css" type="text/css" media="screen, projection" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/menu.css" type="text/css" media="screen, projection" />
+
+    <script language="javascript" type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+    <script language="javascript" type="text/javascript" src="{{ STATIC_URL }}js/jquery.placeholder.js"></script>
+    <script language="javascript" type="text/javascript" src="{{ STATIC_URL }}js/jquery.formatCurrency-1.4.0.min.js"></script>
+    <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+
+    <!-- Plugin Specific CSS -->
+
+    <!--[if lt IE 9]>
+    <script src="https://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript">
+	$(document).ready(function(){
+	    //initialise currency formatter
+	    $('.currency').formatCurrency({ symbol:'{{sharedexpense.currency}}', colorize:true, negativeFormat: '%s-%n' });
+        $('.currency').blur(function(){
+            $('.currency').formatCurrency({ symbol : '{{sharedexpense.currency}}', colorize:true, negativeFormat: '%s-%n' });
+        });
+		//placeholders for older browsers
+		$('input').placeholder();
+	});
+	</script>
+	
+	<script type="text/javascript">
+	function removecurrency(oForm){
+		var el, i = 0;
+		while (el = oForm.elements[i++]){
+			var classStr = el.className
+			if (classStr.indexOf('currency') != -1){
+				el.value = +el.value.replace(/[^\d\.-]/g,'');
+				if (el.value==0){el.value='';}
+			}
+		}	
+		return true;
+	}
+	</script>
+
+</head>
+
+<body>
+  <div id="notfooter">
+    <div class="headerbar">
+	  <div class="container">
+		  <a href="https://www.wesharea.com/"><img src="{{ STATIC_URL }}images/logo/Wsa.png"></a>
+		  {% if request.user.is_authenticated %}    
+			 {% account_logout user %}
+             {% sharedexpense_menu request.user %}
+          {% endif %}
+	  </div><!--/container -->
+	</div><!--/headerbar -->
+
+    {% block social %}{% endblock social %}
+
+    <div class="content">
+      {% block content %}{% endblock content %}
+    </div><!--/content -->
+    <div class="push"></div>
+  </div><!--/notfooter -->
+  <div class="footer">
+    <div class="container">   	
+		  <span>please read our plain english <a href="http://www.facebook.com/notes/we-share-a/terms-conditions/230056863700864" target="_blank">terms and conditions</a></span>
+		  <span>and leave feedback on <a href="http://www.facebook.com/pages/We-Share-A/229265693779981?sk=wall" target="_blank">our wall</a></span>
+		  <br><span>if you need help try the <a href="http://www.facebook.com/notes/we-share-a/faqs/230055707034313" target="_blank">FAQ's</a></span>
+		  <span>or write a question on <a href="http://www.facebook.com/pages/We-Share-A/229265693779981?sk=wall" target="_blank">our wall</a> and we will post a response</span>
+    </div><!--/container-->
+  </div><!--/footerbar -->
+<div id="fb-root"></div>
+<script src="{{ STATIC_URL }}js/facebook.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}js/statictest.js" type="text/javascript"></script>
+<script>
+	facebookAppId = '{{ FACEBOOK_APP_ID }}';
+	facebookDefaultScope = {{ FACEBOOK_DEFAULT_SCOPE_JS }};
+	function facebookJSLoaded(){
+		FB.init({appId: facebookAppId, status: false, cookie: true, xfbml: true, oauth: true});
+	}
+	window.fbAsyncInit = facebookJSLoaded;
+	F = new facebookClass(facebookAppId);
+    F.load();
+</script>
+</body>
+</html>

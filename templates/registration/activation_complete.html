@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="container">
+  <div class="prepend-4 span-16 append-4">
+	<p>{% trans "Your account has been successfully activated." %}</p>
+	<br />
+	<p><a href="{% url home %}">{% trans "Go to Login" %}</a></p>
+  </div><!--span-8-->
+</div><!--container-->
+{% endblock content %}

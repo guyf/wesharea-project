@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  <div class="span-24">
+    {% if messages %}{% comment %}TODO: move this out into custom tag{% endcomment %}
+    <div class="messages">
+      {% for message in messages %}
+        <div {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
+      {% endfor %}
+    </div><!--/messages -->
+    {% endif %}
+  </div><!--/span-24 -->
+
+
+  <div class="span-20 prepend-2 append-2">
+    <div class="group">
+      <h2>Update Group</h2>
+      <form method="post" action="{% url update_group group.id %}">
+    	{% csrf_token %}
+      <table class="no-zebra">
+		  <tr><td>{{group_form.name}}</td><td>&nbsp;&nbsp;</td><td NOWRAP><span class="tabletext">give it a name</span></td><td NOWRAP>{{group_form.name.errors}}</td></tr>
+		  <tr><td>{{group_form.desc_short}}</td><td>&nbsp;&nbsp;</td><td NOWRAP><span class="tabletext">give it a short description (400 characters)</span></td><td NOWRAP>{{group_form.desc_short.errors}}</td></tr>
+		  <tr><td>{{group_form.desc_long}}</td><td>&nbsp;&nbsp;</td><td NOWRAP><span class="tabletext">and a longer description (if you like)</span></td><td NOWRAP>{{group_form.desc_long.errors}}</td></tr>
+        </table>
+        <div class="buttonpanel">
+	      <a href="{% url group_home group.id %}"><input type="button" name="cancel" value="Cancel" /></a>
+          <input type="submit" value="Update" alt="update shared expense" name="update shared expense" />
+	    </div><!--group-->
+      </form>
+    </div><!--editsharedexpense-->
+  </div><!--/span-20 -->
+</div><!--/container-->
+{% endblock content %}

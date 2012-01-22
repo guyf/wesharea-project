@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="container">
+  <div class="prepend-4 span-16 append-4">
+	{% if account %}
+
+	<p>{% trans "Account successfully activated" %}</p>
+
+	<p><a href="{% url auth_login %}">{% trans "Log in" %}</a></p>
+
+	{% else %}
+
+	<p>{% trans "Account activation failed" %}</p>
+
+	{% endif %}
+  </div><!--span-8-->
+</div><!--container-->
+{% endblock %}
+
+

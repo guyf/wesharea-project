@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block content %}
+<script type="text/javascript">
+function selectExistingUsers(frm){
+   var user_ids = new Array();
+   //For each checkbox see if it has been checked, record the value.
+   if (frm.nonlinkfriend.length == undefined && frm.nonlinkfriend.checked) { //only 1 so no array to loop over
+      user_ids.push(frm.nonlinkfriend.value)
+   } 
+   else {
+        for (i = 0; i < frm.nonlinkfriend.length; i++){
+          if (frm.nonlinkfriend[i].checked){
+              user_ids.push(frm.nonlinkfriend[i].value)
+          }
+        }
+   }
+   if (user_ids.length)
+   {
+      $.post("{% url invite_existing group_id %}", { user_ids: user_ids, next: '{% url view_sharedexpense group_id %}'},
+			function(data) {
+				window.location.replace(data);
+	});
+   }
+   else {
+	    //Do something if they don't send it.
+   }
+}
+</script>
+
+<div class="container">
+  <div class="span-24">
+	{% if messages %}{% comment %}TODO: move this out into custom tag{% endcomment %}
+    <div class="messages">
+	  {% for message in messages %}
+	    <div {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
+	  {% endfor %}
+    </div><!--/messages -->
+    {% endif %}
+  </div><!--/span-24 -->
+  <div class="span-24">
+    <div class="addparticipants">
+	    {% if contacts %}
+		<div class="selectuser">
+		  <h3>Contacts you have previously invited</h3>
+		  <div class="nonlinkparticipants">
+			<form>
+			{% for u in contacts %}
+			<div class="nonlinkparticipant">
+		      <div class="participantelement"><input class="checkbox" type="checkbox" value="{{u.id}}" name="nonlinkfriend"></div>
+		      <div class="participantelement"><img class="sfbpic" src="/static/images/silouette.gif"></div>
+		      <div class="participantelement"><div class="friendname">{{ u.first_name }} {{ u.last_name }}</div></div>
+		    </div><!--span-6 nonlinkparticipant-->
+		    {% endfor %}
+		  <div style="clear:both;"></div>
+		  </div><!--nonlinkparticipants-->
+		  <div class="buttonpanel">
+		    <input type="button" value="invite friends" onclick="selectExistingUsers(this.form);" alt="select nonlink friend" name="select nonlink friend">
+		  </form>
+		  </div><!--buttonpanel-->
+		</div><!--selectuser-->
+		<br /><br /><br /><br />
+		<p>Not who you were looking for?</p>
+		<h3>Invite them by email instead</h3>
+		{% else %}
+		<p>Sorry we could not find anyone to whom you have previously sent an invitation</p>
+	  	<h3>Invite them by email instead</h3>
+	  {% endif %}
+	  <p class="small">All fields are required.</p>
+	    <form method="post" action="{% url invite_email group_id %}">
+	      {% csrf_token %}
+	      <table class="no-zebra">
+            <tr><td>{{form.email}}</td><td>&nbsp;&nbsp;</td><td NOWRAP><span class="tabletext">(used to guarantee a unique username)</span></td><td NOWRAP>{{form.email.errors}}</td></tr>
+	   	    <tr><td>{{form.first_name}}</td><td>&nbsp;&nbsp;</td><td NOWRAP><span class="tabletext">enter their first name</span></td><td NOWRAP>{{form.first_name.errors}}</td></tr>
+		    <tr><td>{{form.last_name}}</td><td>&nbsp;&nbsp;</td><td NOWRAP><span class="tabletext">and their last name</span></td><td NOWRAP>{{form.last_name.errors}}</td></tr>
+	      </table>
+	      <div>
+		    <br />
+	        <p class="small">Friends you invite into We Share A will receive an email asking them to click on a link to activate their account.</p>
+	        <p class="small">Once logged in they will be able to enter their own expenses and see (but not edit) other group members' expenses.</p>
+	        <p class="small">Even if they do not activate their account or login you will be able to enter expenses on their behalf, so at least the maths will be right even if you are doing all the work.</p>
+	      </div>
+	      <div class="buttonpanel">
+			<input type="hidden" value="{% url view_sharedexpense group_id %}" name="next" />
+		    <a href="{% url view_sharedexpense group_id %}"><input type="button" name="cancel" value="Cancel" /></a>
+	        <input type="submit" value="Invite Friend" alt="create friend" name="create friend" />
+	      </div><!--buttonpanel-->
+	    </form>
+    <div style="clear:both;"></div>
+    </div><!--/addparticipants -->
+  </div><!--/span-24 -->
+</div><!--/container-->
+{% endblock content %}

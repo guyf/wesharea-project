@@ -1,0 +1,16 @@
+{% load exptracker_tags %}
+
+<div class="viewexpenseitems">
+<table class="exptable">
+
+
+  <thead>
+	{% comment %}TODO: these headers shouldn't be hard coded{% endcomment %}
+	<tr><th><span class="einame">Name</span></th><th><span class="eidesc">Description</span></th><th><span class="date">Paid Date</span></th><th><span class="currency">Amount</span></th></tr>
+  </thead>
+  <tbody>{% for ei in ei_dict %}
+    <tr><td class="einame">{{ ei.name }}</td><td class="eidesc">{{ ei.desc }}</td><td class="date">{{ ei.paid_date }}</td><td class="currency">{{ ei.amount }}</td></tr>
+  {% endfor %}</tbody>
+</table>
+</div><!--viewexpenseitems-->
+

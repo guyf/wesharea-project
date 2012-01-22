@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load exptracker_tags %}
+
+{% block social %}
+<div class="socialbar">
+  <div class="container">
+	 <div class="span-18 append-2">
+          <fb:like href="https://www.facebook.com/pages/We-Share-A/229265693779981" send="true" show_faces="true" font=""></fb:like>
+     </div>
+     <div class="span-4 last">
+	      <div class="span-4 last"><g:plusone></g:plusone></div>
+     </div>
+  </div><!--/container -->
+</div><!--/socialbar -->
+{% endblock social %}
+
+{% block content %}
+<div class="container">
+{% if messages %}{% comment %}TODO: move this out into custom tag{% endcomment %}
+  <div class="span-24">
+	  {% for message in messages %}
+	    <div {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
+	  {% endfor %}
+  </div><!--/span-24 -->
+{% endif %}
+  <div class="span-15 append-2 memenu">
+    <p><a href="{% url create_sharedexpense %}">Create New</a></p>
+  </div><!-- span-15 -->
+  <div class="span-6 append-2 semenu">
+    {% sharedexpense_list request.user %}
+  </div><!-- span-6 -->
+  <div class="span-16 last fbstream">
+    <script src="https://connect.facebook.net/en_US/all.js#xfbml=1"></script>
+    <fb:like-box href="https://www.facebook.com/pages/We-Share-A/229265693779981" width="440" show_faces="false" border_color="" stream="true" header="true"></fb:like-box>
+  </div><!-- span-13 -->
+</div><!--/container -->
+{% endblock content %}

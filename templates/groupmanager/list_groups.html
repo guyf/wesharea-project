@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load groupmanager_tags %}
+
+{% block content %}
+
+<div class="container">
+  <div class="span-24">
+	{% if messages %}{% comment %}TODO: move this out into custom tag{% endcomment %}
+    <div class="messages">
+	  {% for message in messages %}
+	    <div {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
+	  {% endfor %}
+    </div><!--/messages -->
+    {% endif %}
+  </div><!--/span-24 -->
+</div><!--/container-->
+
+<div class="groups">
+  <div class="container">
+     <div class="span-24">
+		{% if org_groups %}
+		<h2>Groups you organise</h2>
+			{% for og in org_groups %}
+				<p><a href="{% url group_home og.id %}">{{ og.name }}</a>&nbsp;&nbsp;{{ og.desc_short }}</p>
+			{% endfor %}
+		{% endif %}
+		{% if part_groups %}
+		<h2>Groups you participate in</h2>
+			{% for pg in org_groups %}
+				<p><a href="{% url group_home og.id %}">{{ pg.name }}</a>&nbsp;&nbsp;{{ pg.desc_short }}</p>
+			{% endfor %}
+		{% endif %}
+	</div><!--/span-24 -->
+  </div><!--/container -->
+</div><!--/groups -->
+
+
+{% endblock content %}
