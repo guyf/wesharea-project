@@ -117,7 +117,6 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # 'django.contrib.admindocs',
     'emailregistration', #no models
-    'browserutils', #no models
     'open_facebook', #no models
     #'south', #below here models built with south
     'registration',

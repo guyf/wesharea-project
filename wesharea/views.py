@@ -53,26 +53,6 @@ def fb_home(request):
     return render_to_response('home.html', context_instance=RequestContext(request))
 
 
-@csrf_exempt
-def welcomefb(request):
-	
-    #logging.debug("WSA: fbwelcome view called with %s by %s" % (request.method, request.facebook.uid))
-    return render_to_response('fb_error.html', context_instance=RequestContext(request))
-    
-    browser_info = detect_browser(request)
-    logging.debug("browser detected: %s " % (browser_info))
-
-    if browser_info['browser'] == 'Safari' or browser_info['browser'] == 'Chrome':
-        logging.debug("dodgy browser detected: %s " % (browser_info['browser']))
-        return render_to_response('fb_nocookie.html', context_instance=RequestContext(request))
-
-    if not request.user.is_authenticated():
-        logging.info("WSA: welcomefb view detected unauthenticated user %s " % (request.user.username))
-        #facebook_login_and_setup(request)
-
-    return render_to_response('welcome.html', context_instance=RequestContext(request))
-
-
 @login_required
 def welcome(request):
 	

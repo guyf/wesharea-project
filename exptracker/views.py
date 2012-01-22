@@ -14,7 +14,6 @@ from django.views.decorators.csrf import csrf_exempt
 from exptracker.models import SharedExpense, ExpenseItem #, Payment
 from exptracker.forms import SharedExpenseForm, ExpenseItemForm, ExpenseItemFormSet #,MakePaymentForm
 from groupmanager.models import Group
-from browserutils import detect_browser
 
 #TODO: find all the direct references into group manager model and decouple further
 
