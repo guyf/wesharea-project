@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>../views.py</string>
+	<string>../templates/exptracker/sharedexpense.html</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -22,9 +22,7 @@
 			<key>filename</key>
 			<string>../views.py</string>
 			<key>lastUsed</key>
-			<date>2012-01-22T22:40:29Z</date>
-			<key>selected</key>
-			<true/>
+			<date>2012-01-24T07:28:40Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -42,7 +40,9 @@
 			<key>filename</key>
 			<string>../templates/exptracker/sharedexpense.html</string>
 			<key>lastUsed</key>
-			<date>2012-01-16T12:02:20Z</date>
+			<date>2012-01-24T07:28:40Z</date>
+			<key>selected</key>
+			<true/>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -182,14 +182,30 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>55</integer>
+				<integer>4</integer>
 				<key>line</key>
-				<integer>44</integer>
+				<integer>82</integer>
 			</dict>
+			<key>columnSelection</key>
+			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>9</integer>
+			<integer>32</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>35</integer>
+				<key>line</key>
+				<integer>82</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>4</integer>
+				<key>line</key>
+				<integer>82</integer>
+			</dict>
 		</dict>
 		<key>../templates/exptracker/tag_balances_widget.html</key>
 		<dict>

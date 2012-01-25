@@ -18,16 +18,16 @@ class EmailInput(forms.widgets.Input):
 
 
 class EmailAuthenticationForm(forms.Form):
-    username = forms.EmailField(label='Email address', widget=EmailInput(attrs={'class': 'username','placeholder': 'Email address'}))
-    password = forms.CharField(label=_("Password"), widget=forms.PasswordInput(attrs={'class': 'password','placeholder': 'Password'}, render_value=False))
+    username = forms.EmailField(label='Email address', widget=EmailInput(attrs={'class': 'input-small','placeholder': 'Email address'}))
+    password = forms.CharField(label=_("Password"), widget=forms.PasswordInput(attrs={'class': 'input-small','placeholder': 'Password'}, render_value=False))
 
         
 class EmailRegistrationForm(forms.ModelForm):
-    email = forms.EmailField(label=_("Email"), widget=EmailInput(attrs={'placeholder': 'Email'}))
-    first_name = forms.CharField(required=True, max_length=30, widget=forms.TextInput(attrs={'placeholder': 'Firstname'}))
-    last_name = forms.CharField(required=True, max_length=30, widget=forms.TextInput(attrs={'placeholder': 'Lastname'}))
-    password1 = forms.CharField(label=_("Password"), widget=forms.PasswordInput(attrs={'class': 'password','placeholder': 'Password'}, render_value=False))
-    password2 = forms.CharField(label=_("Password confirmation"), widget=forms.PasswordInput(attrs={'class': 'password','placeholder': 'Password (again)'}, render_value=False),
+    email = forms.EmailField(required=True, label=_("Email"), widget=EmailInput(attrs={'class': 'xlarge','placeholder': 'Email'}))
+    first_name = forms.CharField(required=True, max_length=30, widget=forms.TextInput(attrs={'class': 'xlarge','placeholder': 'Firstname'}))
+    last_name = forms.CharField(required=True, max_length=30, widget=forms.TextInput(attrs={'class': 'xlarge','placeholder': 'Lastname'}))
+    password1 = forms.CharField(required=True, label=_("Password"), widget=forms.PasswordInput(attrs={'class': 'xlarge','placeholder': 'Password'}, render_value=False))
+    password2 = forms.CharField(required=True, label=_("Password confirmation"), widget=forms.PasswordInput(attrs={'class': 'xlarge','placeholder': 'Password (again)'}, render_value=False),
         help_text = _("Enter the same password as above, for verification."))
  
     class Meta:
@@ -50,7 +50,7 @@ class EmailRegistrationForm(forms.ModelForm):
         
 
 class EmailInvitationForm(forms.ModelForm):
-    email = forms.EmailField(label=_("Email"), widget=EmailInput(attrs={'placeholder': 'Email'}))
+    email = forms.EmailField(required=True, label=_("Email"), widget=EmailInput(attrs={'placeholder': 'Email'}))
     first_name = forms.CharField(required=True, max_length=30, widget=forms.TextInput(attrs={'placeholder': 'Firstname'}))
     last_name = forms.CharField(required=True, max_length=30, widget=forms.TextInput(attrs={'placeholder': 'Lastname'}))
  

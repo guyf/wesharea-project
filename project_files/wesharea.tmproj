@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>../static/css/base.css</string>
+	<string>../wesharea/views.py</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -40,7 +40,9 @@
 			<key>filename</key>
 			<string>../wesharea/views.py</string>
 			<key>lastUsed</key>
-			<date>2012-01-24T16:27:11Z</date>
+			<date>2012-01-25T08:24:58Z</date>
+			<key>selected</key>
+			<true/>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -188,9 +190,7 @@
 			<key>filename</key>
 			<string>../static/css/base.css</string>
 			<key>lastUsed</key>
-			<date>2012-01-25T07:15:20Z</date>
-			<key>selected</key>
-			<true/>
+			<date>2012-01-25T08:24:58Z</date>
 		</dict>
 	</array>
 	<key>fileHierarchyDrawerWidth</key>
@@ -597,7 +597,7 @@
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>0</integer>
+			<integer>11</integer>
 		</dict>
 	</dict>
 	<key>openDocuments</key>
