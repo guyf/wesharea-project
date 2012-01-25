@@ -92,64 +92,64 @@ def update_group(request, group_id):
     return render_to_response("groupmanager/edit_group.html", {'group': g, 'group_form':g_form }, context_instance=RequestContext(request))
 
 
-@login_required		
-def invite_email(request, group_id):
-    """
-    just a wrapper for emailregiatration backend register view which is a clone of the default registration backend
-    but extended to add new users into the appropriate group.
-    """
-    #TODO: currently supports 1 email invite at a time need to make multiple
-    #TODO: capture email text in invite message in when it is editable
-    
-    g = get_object_or_404(Group, pk=group_id)
+    @login_required		
+    def invite_email(request, group_id):
+        """
+        just a wrapper for emailregiatration backend register view which is a clone of the default registration backend
+        but extended to add new users into the appropriate group.
+        """
+        #TODO: currently supports 1 email invite at a time need to make multiple
+        #TODO: capture email text in invite message in when it is editable
 
-    if request.method == 'POST':
-        if g.is_organiser(request.user) or (g.is_member(request.user) and g.is_mem_get_mem) or g.is_open: #check we are the organiser or the group allows others to invite
-            next_url=request.POST.get('next', None) #establish where to go next from a next field in the submitted form
-            logging.debug("GM: attempting to invite a new email invited member and add to group %s then redirect to %s" % (g.name,next_url))
-            user_form = EmailInvitationForm(request.POST)
-            #check if this person already exists as a user. If so just invite them.
-            try:
-                logging.debug("GM: testing duplicate user by email address %s" % (user_form.data['email']))
-                u = User.objects.get(email=user_form.data['email'])
-            except ObjectDoesNotExist:
+        g = get_object_or_404(Group, pk=group_id)
+
+        if request.method == 'POST':
+            if g.is_organiser(request.user) or (g.is_member(request.user) and g.is_mem_get_mem) or g.is_open: #check we are the organiser or the group allows others to invite
+                next_url=request.POST.get('next', None) #establish where to go next from a next field in the submitted form
+                logging.debug("GM: attempting to invite a new email invited member and add to group %s then redirect to %s" % (g.name,next_url))
+                user_form = EmailInvitationForm(request.POST)
+                #check if this person already exists as a user. If so just invite them.
                 if user_form.is_valid():
-                    from registration.backends import get_backend
-                    backend = get_backend('emailregistration.backends.registration.InviteEmailRegBackend') #use custom invite backend to send invitation emails
-                    #create a new inactive user and send them an activation email
-                    u = backend.register(request, **user_form.cleaned_data)
-                    messages.info(request, 'Sucessfully invited %s at address %s to join this group.' % (user_form.data['first_name'], user_form.data['email']))
-                    #get the activation key from the new inactive user registration profile to put in the invite as a reference
-                    from registration.models import RegistrationProfile
-                    p = RegistrationProfile.objects.get(user=u)
-                    #create the invitation in the db
-                    inv = Invitation.objects.create(group_id=g.id, inviter_id=request.user.id, invitee_id=u.id, reg_activation_key=p.activation_key)
-                    logging.debug("RM: create invite to group %s from %s to %s" % (g.id, request.user.id, u.id))
-                else:
+                    try:
+                        logging.debug("GM: testing duplicate user by email address %s" % (user_form.data['email']))
+                        u = User.objects.filter(email=user_form.data['email'])
+                    except ObjectDoesNotExist:
+                        from registration.backends import get_backend
+                        backend = get_backend('emailregistration.backends.registration.InviteEmailRegBackend') #use custom invite backend to send invitation emails
+                        #create a new inactive user and send them an activation email
+                        u = backend.register(request, **user_form.cleaned_data)
+                        messages.info(request, 'Sucessfully invited %s at address %s to join this group.' % (user_form.data['first_name'], user_form.data['email']))
+                        #get the activation key from the new inactive user registration profile to put in the invite as a reference
+                        from registration.models import RegistrationProfile
+                        p = RegistrationProfile.objects.get(user=u)
+                        #create the invitation in the db
+                        inv = Invitation.objects.create(group_id=g.id, inviter_id=request.user.id, invitee_id=u.id, reg_activation_key=p.activation_key)
+                        logging.debug("RM: create invite to group %s from %s to %s" % (g.id, request.user.id, u.id))
+
+                    else: #user already exists (by email) so create the invitation in the db no new user no activation key
+                        inv = Invitation.objects.create(group_id=g.id, inviter_id=request.user.id, invitee_id=u.id, reg_activation_key='existing user invited')
+                        messages.info(request, '%s at address %s is already a user of %s and will receive an invitation to joint this group.' % (u.first_name, u.email, settings.SITE_NAME))
+                        logging.debug("RM: create invite to group %s from %s to %s" % (g.id, request.user.id, u.id))
+                        #TODO: notify them of the new invite by email
+
+                else: #invalid form re-render the template, show form errors
                     logging.debug("GM: Failed to add new email invite user to group %s because posted form was invalid." % (g.name))
-                    #TODO: implement form error handling
-                    messages.error(request, 'Your user was not added, please ensure you complete all fields, if you think this error should not have occurred please let us know.')
-                    
-            else: #user already exists (by email) so create the invitation in the db no new user no activation key
-                inv = Invitation.objects.create(group_id=g.id, inviter_id=request.user.id, invitee_id=u.id, reg_activation_key='existing user invited')
-                messages.info(request, '%s at address %s is already a user of %s and will receive an invitation to joint this group.' % (u.first_name, u.email, settings.SITE_NAME))
-                logging.debug("RM: create invite to group %s from %s to %s" % (g.id, request.user.id, u.id))
-                #TODO: notify them of the new invite by email
-            
-            if settings.AUTO_ACCEPT:  #automatically accept the invite (ie. don't wait for the invitee to do so)
-                inv.accept_invitation()
+                    return render_to_response("groupmanager/invite_email_form.html",{'group_id': group_id, 'form':user_form },context_instance=RequestContext(request))
 
-        else: #user doesn't have permission to invite into the group
-            logging.error("GM: invite_email_member received request to invite users from user without correct permissions.")
-            messages.error(request, 'You do not have permission to invite users to that group. If this problem persists please let us know.')
+                if settings.AUTO_ACCEPT:  #automatically accept the invite (ie. don't wait for the invitee to do so)
+                    inv.accept_invitation()
 
-    else: #its a GET so just render the template
-        user_form = EmailInvitationForm()
-        return render_to_response("groupmanager/invite_email_form.html",{'group_id': group_id, 'form':user_form },context_instance=RequestContext(request))
-        
-    if next_url:
-        return HttpResponseRedirect(next_url)
-    return HttpResponseRedirect(reverse('group_home', args=[g.id]))
+            else: #user doesn't have permission to invite into the group
+                logging.error("GM: invite_email_member received request to invite users from user without correct permissions.")
+                messages.error(request, 'You do not have permission to invite users to that group. If this problem persists please let us know.')
+
+        else: #its a GET so just render the template
+            user_form = EmailInvitationForm()
+            return render_to_response("groupmanager/invite_email_form.html",{'group_id': group_id, 'form':user_form },context_instance=RequestContext(request))
+
+        if next_url:
+            return HttpResponseRedirect(next_url)
+        return HttpResponseRedirect(reverse('group_home', args=[g.id]))
 
 
 def accept_email_invite(request, activation_key):
@@ -235,12 +235,14 @@ def invite_facebook(request, group_id):
                         u = backend.register(request, logon=False, **fbprofile)
                         
                         #take what little we can from the public fb profile and put it into the user profile
-                        #TODO: should maybe check these fields all exist in the profile dict before inserting
                         #TODO: could probably do this through django_facebook update_user
                         p = u.get_profile()
-                        p.facebook_id = fbprofile['id']
-                        p.facebook_name = fbprofile['name']
-                        p.facebook_profile_url = fbprofile['link']
+                        if 'id' in fbprofile:
+                            p.facebook_id = fbprofile['id']
+                        if 'name' in fbprofile:
+                            p.facebook_name = fbprofile['name']
+                        if 'link' in fbprofile:
+                            p.facebook_profile_url = fbprofile['link']
                         p.raw_data = fbprofile
                         p.save()
                         
